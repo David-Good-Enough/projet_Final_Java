@@ -1,22 +1,18 @@
 package fr.ynov.collection;
 
-import fr.ynov.collection.model.Support;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import fr.ynov.collection.view.MainView;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        MainView view = new MainView();
+        view.show(primaryStage);
+    }
+
     public static void main(String[] args) {
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-
-        session.beginTransaction();
-        Support pc = new Support("PC");
-        session.save(pc);
-        session.getTransaction().commit();
-
-        session.close();
-        sessionFactory.close();
-        System.out.println("BDD ok !");
+        launch(args);
     }
 }
