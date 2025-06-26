@@ -19,7 +19,7 @@ public class MainView {
     public void show(Stage stage) {
         try {
             presenter.initialize();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/jeux-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jeux-view.fxml"));
             Parent root = loader.load();
             stage.setTitle("Jeux Vidéo Collection");
             stage.setScene(new Scene(root));

@@ -60,7 +60,7 @@
         </MenuBar>
 
         <BorderPane VBox.vgrow="ALWAYS">
-            <!-- Panneau gauche : Liste des recettes -->
+            <!-- Panneau gauche : Liste des jeux -->
             <left>
                 <VBox maxWidth="300" minWidth="200" prefWidth="230" spacing="10">
                     <padding>
