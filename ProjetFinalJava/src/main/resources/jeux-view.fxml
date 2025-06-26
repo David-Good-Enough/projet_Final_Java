@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.recette.RecetteController">
+    <children>
+        <MenuBar VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Open…" />
+                        <Menu mnemonicParsing="false" text="Open Recent" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" text="Save" />
+                        <MenuItem mnemonicParsing="false" text="Save As…" />
+                        <MenuItem mnemonicParsing="false" text="Revert" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Preferences…" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Quit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Undo" />
+                        <MenuItem mnemonicParsing="false" text="Redo" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Cut" />
+                        <MenuItem mnemonicParsing="false" text="Copy" />
+                        <MenuItem mnemonicParsing="false" text="Paste" />
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Select All" />
+                        <MenuItem mnemonicParsing="false" text="Unselect All" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onAbout" text="About MyHelloApp" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+
+        <BorderPane VBox.vgrow="ALWAYS">
+            <!-- Panneau gauche : Liste des recettes -->
+            <left>
+                <VBox maxWidth="300" minWidth="200" prefWidth="230" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Liste des jeux" />
+                    <ListView fx:id="recipesList" VBox.vgrow="ALWAYS" />
+                </VBox>
+            </left>
+
+            <!-- Panneau central : Aperçu de la recette -->
+            <center>
+                <VBox minWidth="300" prefWidth="350" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Aperçu detail jeux" />
+                    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="recipePreviewBox" spacing="10">
+                            <padding>
+                                <Insets bottom="10" left="10" right="10" top="10" />
+                            </padding>
+                     <ImageView fitHeight="150.0" fitWidth="312.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+                            <Label fx:id="previewTitleLabel" style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+                            <Label style="-fx-font-weight: bold;" text="Editeur" />
+                     <TextField prefHeight="26.0" prefWidth="26.0" />
+                            <Label style="-fx-font-weight: bold;" text="Développeur" />
+                     <TextField prefHeight="26.0" prefWidth="26.0" />
+                            <Label style="-fx-font-weight: bold;" text="Année de sortie" />
+                     <TextField prefHeight="26.0" prefWidth="26.0" />
+                     <Label style="-fx-font-weight: bold;" text="Support" />
+                     <TextField prefHeight="26.0" prefWidth="26.0" />
+                     <Label style="-fx-font-weight: bold;" text="Note Metacritic " />
+                     <TextArea prefHeight="78.0" prefWidth="308.0" />
+                            <Label fx:id="previewPrepTimeLabel" />
+                        </VBox>
+                    </ScrollPane>
+                </VBox>
+            </center>
+
+            <!-- Panneau droit : Formulaire de recette -->
+            <right>
+                <VBox minWidth="230" prefWidth="250" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Formulaire jeux" />
+                    <Label style="-fx-text-fill: #000000;" text="Titre du jeux*" />
+                    <TextField fx:id="recipeTitleField" promptText="Titre du jeux (obligatoire)" />
+                    <Label style="-fx-text-fill: #000000;" text="Editeur*" />
+               <TextField fx:id="recipeTitleField1" promptText="Éditeur (obligatoire)" />
+                    <Label style="-fx-text-fill: #000000;" text="Développeur*" />
+               <TextField fx:id="recipeTitleField11" promptText="Éditeur (obligatoire)" />
+                    <Label style="-fx-text-fill: #000000;" text="Année de sortie *" />
+               <DatePicker />
+               <Label style="-fx-text-fill: #000000;" text="Support*" />
+               <TextField fx:id="recipeTitleField111" promptText="Support (PC, PS5, Switch, etc.)" />
+               <Label style="-fx-text-fill: #000000;" text="Note Metacritic " />
+               <TextArea prefHeight="0.0" prefWidth="230.0" promptText="(optionnelle)" />
+               <Label style="-fx-text-fill: #000000;" text="Jaquette " />
+               <TextField fx:id="recipeTitleField112" promptText=" (image locale ou URL)" />
+                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666; -fx-font-style: italic;" text="* Champs obligatoires" />
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Button fx:id="addButton" minWidth="70" onAction="#onAdd" text="Ajouter" />
+                        <Button fx:id="editButton" minWidth="70" onAction="#onEdit" text="Modifier" />
+                        <Button fx:id="deleteButton" minWidth="70" onAction="#onDelete" text="Supprimer" />
+                    </HBox>
+                </VBox>
+            </right>
+        </BorderPane>
+        
+        <!-- Barre de statut -->
+        <HBox style="-fx-background-color: #f0f0f0; -fx-border-color: #d0d0d0; -fx-border-width: 1px 0 0 0;" VBox.vgrow="NEVER">
+            <padding>
+                <Insets bottom="5" left="10" right="10" top="5" />
+            </padding>
+            <Label fx:id="statusLabel" style="-fx-font-style: italic;" text="Prêt" />
+        </HBox>
+    </children>
+</VBox>
