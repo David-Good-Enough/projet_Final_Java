@@ -45,11 +45,11 @@
             <version>${hibernate.version}</version>
         </dependency>
         
-        <!-- H2 Database (plus stable avec Hibernate) -->
+        <!-- SQLite JDBC -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.2.224</version>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.45.1.0</version>
         </dependency>
         
         <!-- SLF4J pour les logs -->
@@ -64,6 +64,13 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.2</version>
+        </dependency>
+
+        <!-- Hibernate Community Dialects pour SQLite -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-community-dialects</artifactId>
+            <version>6.5.2.Final</version>
         </dependency>
     </dependencies>
 

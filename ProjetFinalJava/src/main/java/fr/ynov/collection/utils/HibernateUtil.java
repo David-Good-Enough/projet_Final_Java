@@ -22,17 +22,19 @@ public class HibernateUtil {
         }
 
         try {
-            logger.info("Initialisation de la SessionFactory Hibernate...");
+            logger.info("Initialisation de la SessionFactory Hibernate (SQLite)...");
             
             Configuration configuration = new Configuration();
             
-            // Configuration pour H2
-            configuration.setProperty("hibernate.connection.url", "jdbc:h2:./collection;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-            configuration.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
-            configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+            // Configuration pour SQLite
+            configuration.setProperty("hibernate.connection.url", "jdbc:sqlite:collection.db");
+            configuration.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC");
+            configuration.setProperty("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
             configuration.setProperty("hibernate.hbm2ddl.auto", "update");
             configuration.setProperty("hibernate.show_sql", "true");
             configuration.setProperty("hibernate.format_sql", "true");
+            configuration.setProperty("hibernate.connection.autocommit", "true");
+            configuration.setProperty("hibernate.jdbc.batch_size", "0");
             
             // Ajouter les classes annotées
             configuration.addAnnotatedClass(fr.ynov.collection.model.JeuVideo.class);
@@ -41,7 +43,7 @@ public class HibernateUtil {
             // Construire la SessionFactory
             sessionFactory = configuration.buildSessionFactory();
             
-            logger.info("SessionFactory Hibernate initialisée avec succès");
+            logger.info("SessionFactory Hibernate initialisée avec succès (SQLite)");
             
         } catch (Exception ex) {
             logger.error("Erreur lors de l'initialisation de la SessionFactory", ex);
