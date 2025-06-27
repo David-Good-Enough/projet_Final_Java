@@ -1,6 +1,7 @@
 package fr.ynov.collection.model;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "jeux_video")
@@ -10,16 +11,39 @@ public class JeuVideo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String titre;
+    
+    @Column(nullable = false)
     private String editeur;
+    
+    @Column(nullable = false)
     private String developpeur;
+    
+    @Column(name = "annee_sortie", nullable = false)
     private int anneeSortie;
-    private String support; // PC, PS5, Switch, etc.
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "support_id", nullable = false)
+    private Support support;
+    
+    @Column(name = "note_metacritic")
     private Double noteMetacritic;
+    
+    @Column(name = "jaquette_url")
     private String jaquette;
 
     public JeuVideo() {}
 
+    public JeuVideo(String titre, String editeur, String developpeur, int anneeSortie, Support support) {
+        this.titre = titre;
+        this.editeur = editeur;
+        this.developpeur = developpeur;
+        this.anneeSortie = anneeSortie;
+        this.support = support;
+    }
+
+    // Getters et Setters
     public int getId() {
         return id;
     }
@@ -60,11 +84,11 @@ public class JeuVideo {
         this.anneeSortie = anneeSortie;
     }
 
-    public String getSupport() {
+    public Support getSupport() {
         return support;
     }
 
-    public void setSupport(String support) {
+    public void setSupport(Support support) {
         this.support = support;
     }
 
@@ -82,5 +106,23 @@ public class JeuVideo {
 
     public void setJaquette(String jaquette) {
         this.jaquette = jaquette;
+    }
+
+    @Override
+    public String toString() {
+        return titre + " (" + anneeSortie + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JeuVideo jeuVideo = (JeuVideo) o;
+        return id == jeuVideo.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

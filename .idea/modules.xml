@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ProjetFinalJava/ProjetFinalJava.iml" filepath="$PROJECT_DIR$/ProjetFinalJava/ProjetFinalJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProjetFinalJava/collection-jeux-video.iml" filepath="$PROJECT_DIR$/ProjetFinalJava/collection-jeux-video.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/projet_Final_Java.iml" filepath="$PROJECT_DIR$/.idea/projet_Final_Java.iml" />
     </modules>
   </component>
