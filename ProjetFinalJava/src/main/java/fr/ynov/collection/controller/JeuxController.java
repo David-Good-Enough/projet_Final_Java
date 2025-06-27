@@ -27,17 +27,21 @@ import java.util.ResourceBundle;
 
 public class JeuxController implements Initializable {
 
-    @FXML private ListView<JeuVideo> recipesList;
-    @FXML private VBox recipePreviewBox;
+    @FXML private ListView<JeuVideo> jeuxListView;
+    @FXML private VBox jeuPreviewBox;
     @FXML private Label previewTitleLabel;
-    @FXML private Label previewPrepTimeLabel;
-    @FXML private TextField recipeTitleField;
-    @FXML private TextField recipeTitleField1;
-    @FXML private TextField recipeTitleField11;
-    @FXML private TextField recipeTitleField111;
-    @FXML private TextField recipeTitleField112;
+    @FXML private Label previewEditeurLabel;
+    @FXML private Label previewDeveloppeurLabel;
+    @FXML private Label previewAnneeLabel;
+    @FXML private Label previewSupportLabel;
+    @FXML private Label previewNoteLabel;
+    @FXML private TextField titreField;
+    @FXML private TextField editeurField;
+    @FXML private TextField developpeurField;
+    @FXML private TextField noteField;
+    @FXML private TextField jaquetteField;
     @FXML private DatePicker datePicker;
-    @FXML private TextArea noteMetacriticArea;
+    @FXML private ChoiceBox<String> supportChoiceBox;
     @FXML private Button addButton;
     @FXML private Button editButton;
     @FXML private Button deleteButton;
@@ -71,7 +75,7 @@ public class JeuxController implements Initializable {
         // Initialiser les listes
         jeuxList = FXCollections.observableArrayList();
         filteredJeuxList = new FilteredList<>(jeuxList, s -> true);
-        recipesList.setItems(filteredJeuxList);
+        jeuxListView.setItems(filteredJeuxList);
 
         // Initialiser les ChoiceBox
         filterChoiceBox.getItems().addAll("Tous", "PC", "PS5", "Switch", "Xbox", "Mobile");
@@ -81,7 +85,7 @@ public class JeuxController implements Initializable {
         sortChoiceBox.setValue("Titre");
 
         // Configurer la ListView
-        recipesList.setCellFactory(param -> new ListCell<JeuVideo>() {
+        jeuxListView.setCellFactory(param -> new ListCell<JeuVideo>() {
             @Override
             protected void updateItem(JeuVideo item, boolean empty) {
                 super.updateItem(item, empty);
@@ -111,7 +115,7 @@ public class JeuxController implements Initializable {
 
     private void setupEventHandlers() {
         // Sélection dans la liste
-        recipesList.getSelectionModel().selectedItemProperty().addListener(
+        jeuxListView.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> {
                 selectedJeu = newValue;
                 if (newValue != null) {
@@ -253,49 +257,48 @@ public class JeuxController implements Initializable {
     }
 
     private void populateForm(JeuVideo jeu) {
-        recipeTitleField.setText(jeu.getTitre());
-        recipeTitleField1.setText(jeu.getEditeur());
-        recipeTitleField11.setText(jeu.getDeveloppeur());
-        
+        titreField.setText(jeu.getTitre());
+        editeurField.setText(jeu.getEditeur());
+        developpeurField.setText(jeu.getDeveloppeur());
+
         if (jeu.getAnneeSortie() > 0) {
             datePicker.setValue(LocalDate.of(jeu.getAnneeSortie(), 1, 1));
         }
         
         if (jeu.getSupport() != null) {
-            recipeTitleField111.setText(jeu.getSupport().getNom());
+            supportChoiceBox.setValue(jeu.getSupport().getNom());
         }
         
         if (jeu.getNoteMetacritic() != null) {
-            noteMetacriticArea.setText(jeu.getNoteMetacritic().toString());
+            noteField.setText(jeu.getNoteMetacritic().toString());
         }
         
         if (jeu.getJaquette() != null) {
-            recipeTitleField112.setText(jeu.getJaquette());
+            jaquetteField.setText(jeu.getJaquette());
         }
     }
 
     private void clearForm() {
-        recipeTitleField.clear();
-        recipeTitleField1.clear();
-        recipeTitleField11.clear();
-        recipeTitleField111.clear();
-        recipeTitleField112.clear();
+        titreField.clear();
+        editeurField.clear();
+        developpeurField.clear();
+        noteField.clear();
+        jaquetteField.clear();
         datePicker.setValue(null);
-        noteMetacriticArea.clear();
         jaquetteImageView.setImage(null);
         selectedJeu = null;
     }
 
     private boolean validateForm() {
-        if (recipeTitleField.getText().trim().isEmpty()) {
+        if (titreField.getText().trim().isEmpty()) {
             showError("Erreur de validation", "Le titre est obligatoire");
             return false;
         }
-        if (recipeTitleField1.getText().trim().isEmpty()) {
+        if (editeurField.getText().trim().isEmpty()) {
             showError("Erreur de validation", "L'éditeur est obligatoire");
             return false;
         }
-        if (recipeTitleField11.getText().trim().isEmpty()) {
+        if (developpeurField.getText().trim().isEmpty()) {
             showError("Erreur de validation", "Le développeur est obligatoire");
             return false;
         }
@@ -303,7 +306,7 @@ public class JeuxController implements Initializable {
             showError("Erreur de validation", "L'année de sortie est obligatoire");
             return false;
         }
-        if (recipeTitleField111.getText().trim().isEmpty()) {
+        if (supportChoiceBox.getValue() == null || supportChoiceBox.getValue().trim().isEmpty()) {
             showError("Erreur de validation", "Le support est obligatoire");
             return false;
         }
@@ -311,16 +314,16 @@ public class JeuxController implements Initializable {
     }
 
     private JeuVideo createJeuFromForm() {
-        String titre = recipeTitleField.getText().trim();
-        String editeur = recipeTitleField1.getText().trim();
-        String developpeur = recipeTitleField11.getText().trim();
+        String titre = titreField.getText().trim();
+        String editeur = editeurField.getText().trim();
+        String developpeur = developpeurField.getText().trim();
         int anneeSortie = datePicker.getValue().getYear();
-        String supportNom = recipeTitleField111.getText().trim();
-        String jaquette = recipeTitleField112.getText().trim();
-        
+        String supportNom = supportChoiceBox.getValue().trim();
+        String jaquette = jaquetteField.getText().trim();
+
         // Gérer la note Metacritic
         Integer noteMetacritic = null;
-        String noteText = noteMetacriticArea.getText().trim();
+        String noteText = noteField.getText().trim();
         if (!noteText.isEmpty()) {
             try {
                 noteMetacritic = Integer.parseInt(noteText);
@@ -386,4 +389,4 @@ public class JeuxController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-} 
+}

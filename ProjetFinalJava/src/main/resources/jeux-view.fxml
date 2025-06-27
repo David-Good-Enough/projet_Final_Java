@@ -1,161 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ynov.collection.controller.JeuxController">
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="fr.ynov.collection.controller.JeuxController"
+      style="-fx-background-color: #f8f9fa;">
     <children>
-        <MenuBar VBox.vgrow="NEVER">
-            <menus>
-                <Menu mnemonicParsing="false" text="Fichier">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Nouveau" />
-                        <MenuItem mnemonicParsing="false" text="Ouvrir…" />
-                        <Menu mnemonicParsing="false" text="Ouvrir Récent" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Fermer" />
-                        <MenuItem mnemonicParsing="false" text="Sauvegarder" />
-                        <MenuItem mnemonicParsing="false" text="Sauvegarder sous…" />
-                        <MenuItem mnemonicParsing="false" text="Restaurer" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Préférences…" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quitter" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Édition">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Annuler" />
-                        <MenuItem mnemonicParsing="false" text="Rétablir" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Couper" />
-                        <MenuItem mnemonicParsing="false" text="Copier" />
-                        <MenuItem mnemonicParsing="false" text="Coller" />
-                        <MenuItem mnemonicParsing="false" text="Supprimer" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Tout sélectionner" />
-                        <MenuItem mnemonicParsing="false" text="Tout désélectionner" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Aide">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onAbout" text="À propos" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
+        <!-- Header avec titre -->
+        <HBox style="-fx-background-color: #2c3e50; -fx-padding: 15;" VBox.vgrow="NEVER">
+            <children>
+                <Label text="🎮 Gestionnaire de Collection de Jeux Vidéo" 
+                       style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+            </children>
+        </HBox>
 
         <BorderPane VBox.vgrow="ALWAYS">
             <!-- Panneau gauche : Liste des jeux -->
             <left>
-                <VBox maxWidth="300" minWidth="200" prefHeight="678.0" prefWidth="230" spacing="10">
+                <VBox maxWidth="350" minWidth="300" spacing="10" 
+                      style="-fx-background-color: white; -fx-border-color: #e9ecef; -fx-border-width: 0 1 0 0;">
                     <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
+                        <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    <SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
-                        <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="208.0">
-                                <children>
-                                    <Button layoutX="12.0" layoutY="56.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="182.0" text="Rechercher" />
-                                    <TextField fx:id="searchField" layoutX="13.0" layoutY="23.0" prefHeight="26.0" prefWidth="182.0" promptText="Rechercher un jeu..." />
-                                    <ChoiceBox fx:id="filterChoiceBox" layoutX="14.0" layoutY="108.0" prefHeight="26.0" prefWidth="179.0" />
-                                    <Label layoutX="59.0" layoutY="5.0" text="Barre de recherche" />
-                                    <Label layoutX="87.0" layoutY="90.0" text="Filtres" />
-                                    <Label layoutX="29.0" layoutY="157.0" text="Trier" />
-                                    <ChoiceBox fx:id="sortChoiceBox" layoutX="66.0" layoutY="153.0" prefHeight="26.0" prefWidth="108.0" />
-                                </children>
-                            </AnchorPane>
-                        </items>
-                    </SplitPane>
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Liste des jeux" />
-                    <ListView fx:id="recipesList" prefHeight="306.0" prefWidth="210.0" VBox.vgrow="ALWAYS" />
+                    
+                    <!-- Barre de recherche et filtres -->
+                    <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 8;">
+                        <Label text="🔍 Recherche et Filtres" 
+                               style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                        
+                        <TextField fx:id="searchField" 
+                                  promptText="Rechercher un jeu..." 
+                                  style="-fx-background-radius: 6;" />
+                        
+                        <HBox spacing="10">
+                            <ChoiceBox fx:id="filterChoiceBox"
+
+                                      prefWidth="120" />
+                            <ChoiceBox fx:id="sortChoiceBox"
+                                      prefWidth="120" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Liste des jeux -->
+                    <Label text="📚 Ma Collection" 
+                           style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+                    
+                    <ListView fx:id="jeuxListView" VBox.vgrow="ALWAYS" 
+                              style="-fx-background-radius: 8;" />
                 </VBox>
             </left>
 
-            <!-- Panneau central : Aperçu détaillé de jeux-->
+            <!-- Panneau central : Aperçu détaillé -->
             <center>
-                <VBox minWidth="300" prefWidth="350" spacing="10">
+                <VBox spacing="15" style="-fx-background-color: white;">
                     <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
+                        <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Aperçu détaillé du jeu" />
-                    <ScrollPane fitToHeight="true" fitToWidth="true" prefWidth="330.0" VBox.vgrow="ALWAYS">
-                        <VBox fx:id="recipePreviewBox" prefHeight="610.0" prefWidth="58.0" spacing="10">
-                            <padding>
-                                <Insets bottom="10" left="10" right="10" top="10" />
-                            </padding>
-                            <ImageView fx:id="jaquetteImageView" fitHeight="150.0" fitWidth="312.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
-                            <Label fx:id="previewTitleLabel" style="-fx-font-weight: bold; -fx-font-size: 18px;" />
-                            <Label style="-fx-font-weight: bold;" text="Éditeur" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
-                            <Label style="-fx-font-weight: bold;" text="Développeur" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
-                            <Label style="-fx-font-weight: bold;" text="Année de sortie" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
-                            <Label style="-fx-font-weight: bold;" text="Support" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
-                            <Label style="-fx-font-weight: bold;" text="Note Metacritic" />
-                            <TextArea prefHeight="78.0" prefWidth="308.0" editable="false" />
-                            <Label fx:id="previewPrepTimeLabel" />
+                    
+                    <Label text="👁️ Aperçu du Jeu" 
+                           style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+                    
+                    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS"
+                                style="-fx-background: transparent;">
+                        <VBox fx:id="jeuPreviewBox" spacing="15" 
+                              style="-fx-background-color: #f8f9fa; -fx-padding: 20; -fx-background-radius: 10;">
+                            
+                            <!-- Jaquette -->
+                            <ImageView fx:id="jaquetteImageView" 
+                                      fitHeight="200" fitWidth="300" 
+                                      preserveRatio="true" 
+                                      style="-fx-background-radius: 8;" />
+                            
+                            <!-- Informations du jeu -->
+                            <VBox spacing="10">
+                                <Label fx:id="previewTitleLabel" 
+                                       style="-fx-font-weight: bold; -fx-font-size: 20px;" />
+                                
+                                <GridPane hgap="10" vgap="5">
+                                    <Label text="Éditeur:" GridPane.columnIndex="0" GridPane.rowIndex="0" 
+                                           style="-fx-font-weight: bold;" />
+                                    <Label fx:id="previewEditeurLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    
+                                    <Label text="Développeur:" GridPane.columnIndex="0" GridPane.rowIndex="1" 
+                                           style="-fx-font-weight: bold;" />
+                                    <Label fx:id="previewDeveloppeurLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    
+                                    <Label text="Année:" GridPane.columnIndex="0" GridPane.rowIndex="2" 
+                                           style="-fx-font-weight: bold;" />
+                                    <Label fx:id="previewAnneeLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    
+                                    <Label text="Support:" GridPane.columnIndex="0" GridPane.rowIndex="3" 
+                                           style="-fx-font-weight: bold;" />
+                                    <Label fx:id="previewSupportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    
+                                    <Label text="Note Metacritic:" GridPane.columnIndex="0" GridPane.rowIndex="4" 
+                                           style="-fx-font-weight: bold;" />
+                                    <Label fx:id="previewNoteLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                </GridPane>
+                            </VBox>
                         </VBox>
                     </ScrollPane>
                 </VBox>
             </center>
 
-            <!-- Panneau droit : Formulaire jeux -->
+            <!-- Panneau droit : Formulaire -->
             <right>
-                <VBox minWidth="230" prefWidth="250" spacing="10">
+                <VBox minWidth="280" prefWidth="320" spacing="15" 
+                      style="-fx-background-color: white; -fx-border-color: #e9ecef; -fx-border-width: 0 0 0 1;">
                     <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
+                        <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Formulaire jeu" />
-                    <Label style="-fx-text-fill: #000000;" text="Titre du jeu*" />
-                    <TextField fx:id="recipeTitleField" promptText="Titre du jeu (obligatoire)" />
-                    <Label style="-fx-text-fill: #000000;" text="Éditeur*" />
-                    <TextField fx:id="recipeTitleField1" promptText="Éditeur (obligatoire)" />
-                    <Label style="-fx-text-fill: #000000;" text="Développeur*" />
-                    <TextField fx:id="recipeTitleField11" promptText="Développeur (obligatoire)" />
-                    <Label style="-fx-text-fill: #000000;" text="Année de sortie*" />
-                    <DatePicker fx:id="datePicker" />
-                    <Label style="-fx-text-fill: #000000;" text="Support*" />
-                    <TextField fx:id="recipeTitleField111" promptText="Support (PC, PS5, Switch, etc.)" />
-                    <Label style="-fx-text-fill: #000000;" text="Note Metacritic" />
-                    <TextArea fx:id="noteMetacriticArea" prefHeight="0.0" prefWidth="230.0" promptText="(optionnelle, 0-100)" />
-                    <Label style="-fx-text-fill: #000000;" text="Jaquette" />
-                    <TextField fx:id="recipeTitleField112" promptText="(image locale ou URL)" />
-                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666; -fx-font-style: italic;" text="* Champs obligatoires" />
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Button fx:id="addButton" minWidth="70" onAction="#onAdd" text="Ajouter" />
-                        <Button fx:id="editButton" minWidth="70" onAction="#onEdit" text="Modifier" />
-                        <Button fx:id="deleteButton" minWidth="70" onAction="#onDelete" text="Supprimer" />
-                    </HBox>
+                    
+                    <Label text="✏️ Ajouter/Modifier un Jeu" 
+                           style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+                    
+                    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS"
+                                style="-fx-background: transparent;">
+                        <VBox spacing="12">
+                            <!-- Titre -->
+                            <VBox spacing="5">
+                                <Label text="Titre du jeu *" style="-fx-font-weight: bold;" />
+                                <TextField fx:id="titreField" promptText="Ex: The Legend of Zelda" 
+                                          style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Éditeur -->
+                            <VBox spacing="5">
+                                <Label text="Éditeur *" style="-fx-font-weight: bold;" />
+                                <TextField fx:id="editeurField" promptText="Ex: Nintendo" 
+                                          style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Développeur -->
+                            <VBox spacing="5">
+                                <Label text="Développeur *" style="-fx-font-weight: bold;" />
+                                <TextField fx:id="developpeurField" promptText="Ex: Nintendo EPD" 
+                                          style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Année -->
+                            <VBox spacing="5">
+                                <Label text="Année de sortie *" style="-fx-font-weight: bold;" />
+                                <DatePicker fx:id="datePicker" style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Support -->
+                            <VBox spacing="5">
+                                <Label text="Support *" style="-fx-font-weight: bold;" />
+                                <ChoiceBox fx:id="supportChoiceBox" style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Note Metacritic -->
+                            <VBox spacing="5">
+                                <Label text="Note Metacritic (optionnel)" style="-fx-font-weight: bold;" />
+                                <TextField fx:id="noteField" promptText="0-100" 
+                                          style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Jaquette -->
+                            <VBox spacing="5">
+                                <Label text="Jaquette" style="-fx-font-weight: bold;" />
+                                <TextField fx:id="jaquetteField" promptText="URL de l'image ou chemin local" 
+                                          style="-fx-background-radius: 6;" />
+                            </VBox>
+                            
+                            <!-- Boutons d'action -->
+                            <VBox spacing="8" style="-fx-padding: 15 0 0 0;">
+                                <Button fx:id="addButton" text="➕ Ajouter" 
+                                        style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 6;" />
+                                <Button fx:id="editButton" text="✏️ Modifier" 
+                                        style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 6;" />
+                                <Button fx:id="deleteButton" text="🗑️ Supprimer" 
+                                        style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 6;" />
+                            </VBox>
+                        </VBox>
+                    </ScrollPane>
                 </VBox>
             </right>
         </BorderPane>
 
         <!-- Barre de statut -->
-        <HBox style="-fx-background-color: #f0f0f0; -fx-border-color: #d0d0d0; -fx-border-width: 1px 0 0 0;" VBox.vgrow="NEVER">
-            <padding>
-                <Insets bottom="5" left="10" right="10" top="5" />
-            </padding>
-            <Label fx:id="statusLabel" style="-fx-font-style: italic;" text="Prêt" />
+        <HBox style="-fx-background-color: #343a40; -fx-padding: 8;" VBox.vgrow="NEVER">
+            <Label fx:id="statusLabel" text="Prêt" 
+                   style="-fx-text-fill: white; -fx-font-style: italic;" />
         </HBox>
     </children>
 </VBox>
