@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 
@@ -21,8 +22,13 @@ public class MainView {
             presenter.initialize();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/jeux-view.fxml"));
             Parent root = loader.load();
+
+            // Ajouter les styles BootstrapFX
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+
             stage.setTitle("Gestionnaire de Collection de Jeux Vidéo");
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load jeux-view.fxml", e);

@@ -8,47 +8,51 @@
 
 <VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="fr.ynov.collection.controller.JeuxController"
-      style="-fx-background-color: #f8f9fa;">
+      styleClass="panel">
     <children>
         <!-- Header avec titre -->
-        <HBox style="-fx-background-color: #2c3e50; -fx-padding: 15;" VBox.vgrow="NEVER">
+        <HBox styleClass="panel-heading, panel-primary" VBox.vgrow="NEVER">
             <children>
                 <Label text="🎮 Gestionnaire de Collection de Jeux Vidéo" 
-                       style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+                       styleClass="h3" style="-fx-text-fill: white;" />
             </children>
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
         </HBox>
 
         <BorderPane VBox.vgrow="ALWAYS">
             <!-- Panneau gauche : Liste des jeux -->
             <left>
                 <VBox maxWidth="350" minWidth="300" spacing="10" 
-                      style="-fx-background-color: white; -fx-border-color: #e9ecef; -fx-border-width: 0 1 0 0;">
+                      styleClass="panel, panel-default">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
                     
                     <!-- Barre de recherche et filtres -->
-                    <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 8;">
-                        <Label text="🔍 Recherche et Filtres" 
-                               style="-fx-font-weight: bold; -fx-font-size: 14px;" />
-                        
+                    <VBox spacing="10" styleClass="panel-body">
+                        <Label text="🔍 Recherche et Filtres"
+                               styleClass="h4" />
+
                         <TextField fx:id="searchField" 
                                   promptText="Rechercher un jeu..." 
-                                  style="-fx-background-radius: 6;" />
-                        
+                                  styleClass="form-control" />
+
                         <HBox spacing="10">
                             <ChoiceBox fx:id="filterChoiceBox"
-
-                                      prefWidth="120" />
+                                      prefWidth="120"
+                                      styleClass="form-control" />
                             <ChoiceBox fx:id="sortChoiceBox"
-                                      prefWidth="120" />
+                                      prefWidth="120"
+                                      styleClass="form-control" />
                         </HBox>
                     </VBox>
 
                     <!-- Liste des jeux -->
                     <Label text="📚 Ma Collection" 
-                           style="-fx-font-weight: bold; -fx-font-size: 16px;" />
-                    
+                           styleClass="h4" />
+
                     <ListView fx:id="jeuxListView" VBox.vgrow="ALWAYS" 
                               style="-fx-background-radius: 8;" />
                 </VBox>
@@ -56,49 +60,48 @@
 
             <!-- Panneau central : Aperçu détaillé -->
             <center>
-                <VBox spacing="15" style="-fx-background-color: white;">
+                <VBox spacing="15" styleClass="panel, panel-default">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
                     
                     <Label text="👁️ Aperçu du Jeu" 
-                           style="-fx-font-weight: bold; -fx-font-size: 18px;" />
-                    
+                           styleClass="panel-title" />
+
                     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS"
-                                style="-fx-background: transparent;">
-                        <VBox fx:id="jeuPreviewBox" spacing="15" 
-                              style="-fx-background-color: #f8f9fa; -fx-padding: 20; -fx-background-radius: 10;">
-                            
+                                styleClass="panel-body">
+                        <VBox fx:id="jeuPreviewBox" spacing="15">
+
                             <!-- Jaquette -->
                             <ImageView fx:id="jaquetteImageView" 
                                       fitHeight="200" fitWidth="300" 
                                       preserveRatio="true" 
-                                      style="-fx-background-radius: 8;" />
-                            
+                                      styleClass="img-thumbnail" />
+
                             <!-- Informations du jeu -->
                             <VBox spacing="10">
                                 <Label fx:id="previewTitleLabel" 
-                                       style="-fx-font-weight: bold; -fx-font-size: 20px;" />
-                                
+                                       styleClass="h3" />
+
                                 <GridPane hgap="10" vgap="5">
                                     <Label text="Éditeur:" GridPane.columnIndex="0" GridPane.rowIndex="0" 
-                                           style="-fx-font-weight: bold;" />
+                                           styleClass="b" />
                                     <Label fx:id="previewEditeurLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                     
                                     <Label text="Développeur:" GridPane.columnIndex="0" GridPane.rowIndex="1" 
-                                           style="-fx-font-weight: bold;" />
+                                           styleClass="b" />
                                     <Label fx:id="previewDeveloppeurLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     
                                     <Label text="Année:" GridPane.columnIndex="0" GridPane.rowIndex="2" 
-                                           style="-fx-font-weight: bold;" />
+                                           styleClass="b" />
                                     <Label fx:id="previewAnneeLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     
                                     <Label text="Support:" GridPane.columnIndex="0" GridPane.rowIndex="3" 
-                                           style="-fx-font-weight: bold;" />
+                                           styleClass="b" />
                                     <Label fx:id="previewSupportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     
                                     <Label text="Note Metacritic:" GridPane.columnIndex="0" GridPane.rowIndex="4" 
-                                           style="-fx-font-weight: bold;" />
+                                           styleClass="b" />
                                     <Label fx:id="previewNoteLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 </GridPane>
                             </VBox>
@@ -110,72 +113,84 @@
             <!-- Panneau droit : Formulaire -->
             <right>
                 <VBox minWidth="280" prefWidth="320" spacing="15" 
-                      style="-fx-background-color: white; -fx-border-color: #e9ecef; -fx-border-width: 0 0 0 1;">
+                      styleClass="panel, panel-default">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
                     
                     <Label text="✏️ Ajouter/Modifier un Jeu" 
-                           style="-fx-font-weight: bold; -fx-font-size: 16px;" />
-                    
+                           styleClass="panel-title" />
+
                     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS"
-                                style="-fx-background: transparent;">
-                        <VBox spacing="12">
+                                styleClass="panel-body">
+                        <VBox spacing="12" styleClass="form-group">
                             <!-- Titre -->
                             <VBox spacing="5">
-                                <Label text="Titre du jeu *" style="-fx-font-weight: bold;" />
-                                <TextField fx:id="titreField" promptText="Ex: The Legend of Zelda" 
-                                          style="-fx-background-radius: 6;" />
+                                <Label text="Titre du jeu *" styleClass="b" />
+                                <TextField fx:id="titreField" promptText="Ex: The Legend of Zelda"
+                                          styleClass="form-control" />
                             </VBox>
                             
                             <!-- Éditeur -->
                             <VBox spacing="5">
-                                <Label text="Éditeur *" style="-fx-font-weight: bold;" />
-                                <TextField fx:id="editeurField" promptText="Ex: Nintendo" 
-                                          style="-fx-background-radius: 6;" />
+                                <Label text="Éditeur *" styleClass="b" />
+                                <TextField fx:id="editeurField" promptText="Ex: Nintendo"
+                                          styleClass="form-control" />
                             </VBox>
                             
                             <!-- Développeur -->
                             <VBox spacing="5">
-                                <Label text="Développeur *" style="-fx-font-weight: bold;" />
-                                <TextField fx:id="developpeurField" promptText="Ex: Nintendo EPD" 
-                                          style="-fx-background-radius: 6;" />
+                                <Label text="Développeur *" styleClass="b" />
+                                <TextField fx:id="developpeurField" promptText="Ex: Nintendo EPD"
+                                          styleClass="form-control" />
                             </VBox>
                             
                             <!-- Année -->
                             <VBox spacing="5">
-                                <Label text="Année de sortie *" style="-fx-font-weight: bold;" />
-                                <DatePicker fx:id="datePicker" style="-fx-background-radius: 6;" />
+                                <Label text="Année de sortie *" styleClass="b" />
+                                <DatePicker fx:id="datePicker" styleClass="form-control" />
                             </VBox>
                             
                             <!-- Support -->
                             <VBox spacing="5">
-                                <Label text="Support *" style="-fx-font-weight: bold;" />
-                                <ChoiceBox fx:id="supportChoiceBox" style="-fx-background-radius: 6;" />
+                                <Label text="Support *" styleClass="b" />
+                                <ChoiceBox fx:id="supportChoiceBox" styleClass="form-control" />
                             </VBox>
                             
                             <!-- Note Metacritic -->
                             <VBox spacing="5">
-                                <Label text="Note Metacritic (optionnel)" style="-fx-font-weight: bold;" />
-                                <TextField fx:id="noteField" promptText="0-100" 
-                                          style="-fx-background-radius: 6;" />
+                                <Label text="Note Metacritic (optionnel)" styleClass="b" />
+                                <TextField fx:id="noteField" promptText="0-100"
+                                          styleClass="form-control" />
                             </VBox>
                             
                             <!-- Jaquette -->
                             <VBox spacing="5">
-                                <Label text="Jaquette" style="-fx-font-weight: bold;" />
-                                <TextField fx:id="jaquetteField" promptText="URL de l'image ou chemin local" 
-                                          style="-fx-background-radius: 6;" />
+                                <Label text="Jaquette" styleClass="b" />
+                                <TextField fx:id="jaquetteField" promptText="URL de l'image ou chemin local"
+                                          styleClass="form-control" />
                             </VBox>
                             
                             <!-- Boutons d'action -->
                             <VBox spacing="8" style="-fx-padding: 15 0 0 0;">
-                                <Button fx:id="addButton" text="➕ Ajouter" 
-                                        style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 6;" />
-                                <Button fx:id="editButton" text="✏️ Modifier" 
-                                        style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-background-radius: 6;" />
-                                <Button fx:id="deleteButton" text="🗑️ Supprimer" 
-                                        style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 6;" />
+                                <Button fx:id="addButton" text="Ajouter" maxWidth="Infinity"
+                                        styleClass="btn, btn-success">
+                                    <graphic>
+                                        <Label styleClass="glyph-icon, glyph-plus" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="editButton" text="Modifier" maxWidth="Infinity"
+                                        styleClass="btn, btn-warning">
+                                    <graphic>
+                                        <Label styleClass="glyph-icon, glyph-pencil" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="deleteButton" text="Supprimer" maxWidth="Infinity"
+                                        styleClass="btn, btn-danger">
+                                    <graphic>
+                                        <Label styleClass="glyph-icon, glyph-trash" />
+                                    </graphic>
+                                </Button>
                             </VBox>
                         </VBox>
                     </ScrollPane>
@@ -184,9 +199,12 @@
         </BorderPane>
 
         <!-- Barre de statut -->
-        <HBox style="-fx-background-color: #343a40; -fx-padding: 8;" VBox.vgrow="NEVER">
-            <Label fx:id="statusLabel" text="Prêt" 
-                   style="-fx-text-fill: white; -fx-font-style: italic;" />
+        <HBox styleClass="panel-footer" VBox.vgrow="NEVER">
+            <padding>
+                <Insets bottom="8" left="8" right="8" top="8" />
+            </padding>
+            <Label fx:id="statusLabel" text="Prêt"
+                   styleClass="text-muted" />
         </HBox>
     </children>
 </VBox>
