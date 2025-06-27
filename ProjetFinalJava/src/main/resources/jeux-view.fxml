@@ -6,15 +6,23 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fr.ynov.collection.controller.JeuxController"
       styleClass="panel">
     <children>
         <!-- Header avec titre -->
-        <HBox styleClass="panel-heading, panel-primary" VBox.vgrow="NEVER">
+        <HBox styleClass="navbar, navbar-dark, bg-primary" VBox.vgrow="NEVER">
             <children>
-                <Label text="🎮 Gestionnaire de Collection de Jeux Vidéo" 
+                <Label text="🎮 Gestionnaire de Collection de Jeux Vidéo"
                        styleClass="h3" style="-fx-text-fill: white;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <TextField fx:id="searchField" promptText="Rechercher un jeu..."
+                          styleClass="form-control" prefWidth="250" />
+                <Button styleClass="btn, btn-light">
+                    <graphic>
+                        <Label styleClass="glyph-icon, glyph-search"/>
+                    </graphic>
+                </Button>
             </children>
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
@@ -24,25 +32,26 @@
         <BorderPane VBox.vgrow="ALWAYS">
             <!-- Panneau gauche : Liste des jeux -->
             <left>
-                <VBox maxWidth="350" minWidth="300" spacing="10" 
+                <VBox maxWidth="350" minWidth="300" spacing="10"
                       styleClass="panel, panel-default">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    
+
                     <!-- Barre de recherche et filtres -->
                     <VBox spacing="10" styleClass="panel-body">
-                        <Label text="🔍 Recherche et Filtres"
+                        <Label text="🔍 Filtres et Tri"
                                styleClass="h4" />
 
-                        <TextField fx:id="searchField" 
-                                  promptText="Rechercher un jeu..." 
-                                  styleClass="form-control" />
-
                         <HBox spacing="10">
+                            <Label text="Filtrer:" styleClass="label" />
                             <ChoiceBox fx:id="filterChoiceBox"
                                       prefWidth="120"
                                       styleClass="form-control" />
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Trier par:" styleClass="label" />
                             <ChoiceBox fx:id="sortChoiceBox"
                                       prefWidth="120"
                                       styleClass="form-control" />
@@ -50,11 +59,15 @@
                     </VBox>
 
                     <!-- Liste des jeux -->
-                    <Label text="📚 Ma Collection" 
+                    <Label text="📚 Ma Collection"
                            styleClass="h4" />
 
-                    <ListView fx:id="jeuxListView" VBox.vgrow="ALWAYS" 
-                              style="-fx-background-radius: 8;" />
+                    <ListView fx:id="jeuxListView" VBox.vgrow="ALWAYS"
+                              styleClass="list-view">
+                        <placeholder>
+                            <Label text="Aucun jeu dans votre collection" styleClass="text-muted"/>
+                        </placeholder>
+                    </ListView>
                 </VBox>
             </left>
 
@@ -64,45 +77,64 @@
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    
-                    <Label text="👁️ Aperçu du Jeu" 
-                           styleClass="panel-title" />
+
+                    <Label text="👁️ Aperçu du Jeu"
+                           styleClass="panel-title, h4" />
 
                     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS"
                                 styleClass="panel-body">
-                        <VBox fx:id="jeuPreviewBox" spacing="15">
+                        <VBox fx:id="jeuPreviewBox" spacing="15" styleClass="card">
 
-                            <!-- Jaquette -->
-                            <ImageView fx:id="jaquetteImageView" 
-                                      fitHeight="200" fitWidth="300" 
-                                      preserveRatio="true" 
-                                      styleClass="img-thumbnail" />
+                            <!-- En-tête avec jaquette et titre -->
+                            <VBox alignment="CENTER" styleClass="card-header">
+                                <!-- Jaquette -->
+                                <ImageView fx:id="jaquetteImageView"
+                                          fitHeight="200" fitWidth="300"
+                                          preserveRatio="true"
+                                          styleClass="img-thumbnail" />
+
+                                <!-- Titre -->
+                                <Label fx:id="previewTitleLabel"
+                                       styleClass="h3, card-title" />
+
+                                <!-- Badges -->
+                                <HBox alignment="CENTER" spacing="5">
+                                    <Label fx:id="previewSupportLabel" styleClass="badge, badge-primary" />
+                                    <Label fx:id="previewAnneeLabel" styleClass="badge, badge-secondary" />
+                                </HBox>
+                            </VBox>
 
                             <!-- Informations du jeu -->
-                            <VBox spacing="10">
-                                <Label fx:id="previewTitleLabel" 
-                                       styleClass="h3" />
+                            <VBox spacing="10" styleClass="card-body">
+                                <GridPane hgap="15" vgap="5">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="100" halignment="RIGHT" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                    </columnConstraints>
 
-                                <GridPane hgap="10" vgap="5">
-                                    <Label text="Éditeur:" GridPane.columnIndex="0" GridPane.rowIndex="0" 
-                                           styleClass="b" />
+                                    <Label text="Éditeur:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                           styleClass="text-muted" />
                                     <Label fx:id="previewEditeurLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    
-                                    <Label text="Développeur:" GridPane.columnIndex="0" GridPane.rowIndex="1" 
-                                           styleClass="b" />
+
+                                    <Label text="Développeur:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                           styleClass="text-muted" />
                                     <Label fx:id="previewDeveloppeurLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    
-                                    <Label text="Année:" GridPane.columnIndex="0" GridPane.rowIndex="2" 
-                                           styleClass="b" />
-                                    <Label fx:id="previewAnneeLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    
-                                    <Label text="Support:" GridPane.columnIndex="0" GridPane.rowIndex="3" 
-                                           styleClass="b" />
-                                    <Label fx:id="previewSupportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    
-                                    <Label text="Note Metacritic:" GridPane.columnIndex="0" GridPane.rowIndex="4" 
-                                           styleClass="b" />
-                                    <Label fx:id="previewNoteLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                                    <Label text="Année:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                           styleClass="text-muted" />
+                                    <Label fx:id="previewAnneeDetailLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                    <Label text="Support:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                                           styleClass="text-muted" />
+                                    <Label fx:id="previewSupportDetailLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                                    <Label text="Note Metacritic:" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                                           styleClass="text-muted" />
+                                    <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                        <Label fx:id="previewNoteLabel" styleClass="badge, badge-warning" />
+                                        <ProgressBar fx:id="noteProgressBar" progress="0.75" prefWidth="150"
+                                                   styleClass="progress" />
+                                    </HBox>
                                 </GridPane>
                             </VBox>
                         </VBox>
@@ -112,14 +144,14 @@
 
             <!-- Panneau droit : Formulaire -->
             <right>
-                <VBox minWidth="280" prefWidth="320" spacing="15" 
+                <VBox minWidth="280" prefWidth="320" spacing="15"
                       styleClass="panel, panel-default">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    
-                    <Label text="✏️ Ajouter/Modifier un Jeu" 
-                           styleClass="panel-title" />
+
+                    <Label text="✏️ Ajouter/Modifier un Jeu"
+                           styleClass="panel-title, h4" />
 
                     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS"
                                 styleClass="panel-body">
@@ -130,47 +162,54 @@
                                 <TextField fx:id="titreField" promptText="Ex: The Legend of Zelda"
                                           styleClass="form-control" />
                             </VBox>
-                            
+
                             <!-- Éditeur -->
                             <VBox spacing="5">
                                 <Label text="Éditeur *" styleClass="b" />
                                 <TextField fx:id="editeurField" promptText="Ex: Nintendo"
                                           styleClass="form-control" />
                             </VBox>
-                            
+
                             <!-- Développeur -->
                             <VBox spacing="5">
                                 <Label text="Développeur *" styleClass="b" />
                                 <TextField fx:id="developpeurField" promptText="Ex: Nintendo EPD"
                                           styleClass="form-control" />
                             </VBox>
-                            
+
                             <!-- Année -->
                             <VBox spacing="5">
                                 <Label text="Année de sortie *" styleClass="b" />
                                 <DatePicker fx:id="datePicker" styleClass="form-control" />
                             </VBox>
-                            
+
                             <!-- Support -->
                             <VBox spacing="5">
                                 <Label text="Support *" styleClass="b" />
-                                <ChoiceBox fx:id="supportChoiceBox" styleClass="form-control" />
+                                <ChoiceBox fx:id="supportChoiceBox" styleClass="form-control" maxWidth="Infinity" />
                             </VBox>
-                            
+
                             <!-- Note Metacritic -->
                             <VBox spacing="5">
                                 <Label text="Note Metacritic (optionnel)" styleClass="b" />
                                 <TextField fx:id="noteField" promptText="0-100"
                                           styleClass="form-control" />
                             </VBox>
-                            
+
                             <!-- Jaquette -->
                             <VBox spacing="5">
                                 <Label text="Jaquette" styleClass="b" />
-                                <TextField fx:id="jaquetteField" promptText="URL de l'image ou chemin local"
-                                          styleClass="form-control" />
+                                <HBox spacing="5">
+                                    <TextField fx:id="jaquetteField" promptText="URL ou chemin"
+                                             styleClass="form-control" HBox.hgrow="ALWAYS" />
+                                    <Button styleClass="btn, btn-secondary">
+                                        <graphic>
+                                            <Label styleClass="glyph-icon, glyph-folder-open"/>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
                             </VBox>
-                            
+
                             <!-- Boutons d'action -->
                             <VBox spacing="8" style="-fx-padding: 15 0 0 0;">
                                 <Button fx:id="addButton" text="Ajouter" maxWidth="Infinity"
@@ -199,12 +238,15 @@
         </BorderPane>
 
         <!-- Barre de statut -->
-        <HBox styleClass="panel-footer" VBox.vgrow="NEVER">
+        <HBox styleClass="navbar, navbar-light, bg-light" VBox.vgrow="NEVER">
             <padding>
                 <Insets bottom="8" left="8" right="8" top="8" />
             </padding>
             <Label fx:id="statusLabel" text="Prêt"
                    styleClass="text-muted" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="Jeux dans la collection: " styleClass="text-muted" />
+            <Label fx:id="totalJeuxLabel" text="0" styleClass="badge, badge-primary" />
         </HBox>
     </children>
 </VBox>
