@@ -20,43 +20,43 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.jeux.Controller">
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ynov.collection.controller.JeuxController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Fichier">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open…" />
-                        <Menu mnemonicParsing="false" text="Open Recent" />
+                        <MenuItem mnemonicParsing="false" text="Nouveau" />
+                        <MenuItem mnemonicParsing="false" text="Ouvrir…" />
+                        <Menu mnemonicParsing="false" text="Ouvrir Récent" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                        <MenuItem mnemonicParsing="false" text="Save As…" />
-                        <MenuItem mnemonicParsing="false" text="Revert" />
+                        <MenuItem mnemonicParsing="false" text="Fermer" />
+                        <MenuItem mnemonicParsing="false" text="Sauvegarder" />
+                        <MenuItem mnemonicParsing="false" text="Sauvegarder sous…" />
+                        <MenuItem mnemonicParsing="false" text="Restaurer" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Preferences…" />
+                        <MenuItem mnemonicParsing="false" text="Préférences…" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quit" />
+                        <MenuItem mnemonicParsing="false" text="Quitter" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu mnemonicParsing="false" text="Édition">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Undo" />
-                        <MenuItem mnemonicParsing="false" text="Redo" />
+                        <MenuItem mnemonicParsing="false" text="Annuler" />
+                        <MenuItem mnemonicParsing="false" text="Rétablir" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Cut" />
-                        <MenuItem mnemonicParsing="false" text="Copy" />
-                        <MenuItem mnemonicParsing="false" text="Paste" />
-                        <MenuItem mnemonicParsing="false" text="Delete" />
+                        <MenuItem mnemonicParsing="false" text="Couper" />
+                        <MenuItem mnemonicParsing="false" text="Copier" />
+                        <MenuItem mnemonicParsing="false" text="Coller" />
+                        <MenuItem mnemonicParsing="false" text="Supprimer" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Select All" />
-                        <MenuItem mnemonicParsing="false" text="Unselect All" />
+                        <MenuItem mnemonicParsing="false" text="Tout sélectionner" />
+                        <MenuItem mnemonicParsing="false" text="Tout désélectionner" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="Aide">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onAbout" text="About MyHelloApp" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAbout" text="À propos" />
                     </items>
                 </Menu>
             </menus>
@@ -74,12 +74,12 @@
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="208.0">
                                 <children>
                                     <Button layoutX="12.0" layoutY="56.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="182.0" text="Rechercher" />
-                                    <TextField layoutX="13.0" layoutY="23.0" prefHeight="26.0" prefWidth="182.0" />
-                                    <ChoiceBox layoutX="14.0" layoutY="108.0" prefHeight="26.0" prefWidth="179.0" />
-                                    <Label layoutX="59.0" layoutY="5.0" text="Barre de rechercher" />
-                                    <Label layoutX="87.0" layoutY="90.0" text="Fittres" />
+                                    <TextField fx:id="searchField" layoutX="13.0" layoutY="23.0" prefHeight="26.0" prefWidth="182.0" promptText="Rechercher un jeu..." />
+                                    <ChoiceBox fx:id="filterChoiceBox" layoutX="14.0" layoutY="108.0" prefHeight="26.0" prefWidth="179.0" />
+                                    <Label layoutX="59.0" layoutY="5.0" text="Barre de recherche" />
+                                    <Label layoutX="87.0" layoutY="90.0" text="Filtres" />
                                     <Label layoutX="29.0" layoutY="157.0" text="Trier" />
-                                    <ChoiceBox layoutX="66.0" layoutY="153.0" prefHeight="26.0" prefWidth="108.0" />
+                                    <ChoiceBox fx:id="sortChoiceBox" layoutX="66.0" layoutY="153.0" prefHeight="26.0" prefWidth="108.0" />
                                 </children>
                             </AnchorPane>
                         </items>
@@ -89,30 +89,30 @@
                 </VBox>
             </left>
 
-            <!-- Panneau central : Aperçu detaille de jeux-->
+            <!-- Panneau central : Aperçu détaillé de jeux-->
             <center>
                 <VBox minWidth="300" prefWidth="350" spacing="10">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Aperçu detail jeux" />
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Aperçu détaillé du jeu" />
                     <ScrollPane fitToHeight="true" fitToWidth="true" prefWidth="330.0" VBox.vgrow="ALWAYS">
                         <VBox fx:id="recipePreviewBox" prefHeight="610.0" prefWidth="58.0" spacing="10">
                             <padding>
                                 <Insets bottom="10" left="10" right="10" top="10" />
                             </padding>
-                            <ImageView fitHeight="150.0" fitWidth="312.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+                            <ImageView fx:id="jaquetteImageView" fitHeight="150.0" fitWidth="312.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
                             <Label fx:id="previewTitleLabel" style="-fx-font-weight: bold; -fx-font-size: 18px;" />
-                            <Label style="-fx-font-weight: bold;" text="Editeur" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" />
+                            <Label style="-fx-font-weight: bold;" text="Éditeur" />
+                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
                             <Label style="-fx-font-weight: bold;" text="Développeur" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" />
+                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
                             <Label style="-fx-font-weight: bold;" text="Année de sortie" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" />
+                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
                             <Label style="-fx-font-weight: bold;" text="Support" />
-                            <TextField prefHeight="26.0" prefWidth="26.0" />
-                            <Label style="-fx-font-weight: bold;" text="Note Metacritic " />
-                            <TextArea prefHeight="78.0" prefWidth="308.0" />
+                            <TextField prefHeight="26.0" prefWidth="26.0" editable="false" />
+                            <Label style="-fx-font-weight: bold;" text="Note Metacritic" />
+                            <TextArea prefHeight="78.0" prefWidth="308.0" editable="false" />
                             <Label fx:id="previewPrepTimeLabel" />
                         </VBox>
                     </ScrollPane>
@@ -125,21 +125,21 @@
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Formulaire jeux" />
-                    <Label style="-fx-text-fill: #000000;" text="Titre du jeux*" />
-                    <TextField fx:id="recipeTitleField" promptText="Titre du jeux (obligatoire)" />
-                    <Label style="-fx-text-fill: #000000;" text="Editeur*" />
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Formulaire jeu" />
+                    <Label style="-fx-text-fill: #000000;" text="Titre du jeu*" />
+                    <TextField fx:id="recipeTitleField" promptText="Titre du jeu (obligatoire)" />
+                    <Label style="-fx-text-fill: #000000;" text="Éditeur*" />
                     <TextField fx:id="recipeTitleField1" promptText="Éditeur (obligatoire)" />
                     <Label style="-fx-text-fill: #000000;" text="Développeur*" />
-                    <TextField fx:id="recipeTitleField11" promptText="Éditeur (obligatoire)" />
-                    <Label style="-fx-text-fill: #000000;" text="Année de sortie *" />
-                    <DatePicker />
+                    <TextField fx:id="recipeTitleField11" promptText="Développeur (obligatoire)" />
+                    <Label style="-fx-text-fill: #000000;" text="Année de sortie*" />
+                    <DatePicker fx:id="datePicker" />
                     <Label style="-fx-text-fill: #000000;" text="Support*" />
                     <TextField fx:id="recipeTitleField111" promptText="Support (PC, PS5, Switch, etc.)" />
-                    <Label style="-fx-text-fill: #000000;" text="Note Metacritic " />
-                    <TextArea prefHeight="0.0" prefWidth="230.0" promptText="(optionnelle)" />
-                    <Label style="-fx-text-fill: #000000;" text="Jaquette " />
-                    <TextField fx:id="recipeTitleField112" promptText=" (image locale ou URL)" />
+                    <Label style="-fx-text-fill: #000000;" text="Note Metacritic" />
+                    <TextArea fx:id="noteMetacriticArea" prefHeight="0.0" prefWidth="230.0" promptText="(optionnelle, 0-100)" />
+                    <Label style="-fx-text-fill: #000000;" text="Jaquette" />
+                    <TextField fx:id="recipeTitleField112" promptText="(image locale ou URL)" />
                     <Label style="-fx-font-size: 10px; -fx-text-fill: #666666; -fx-font-style: italic;" text="* Champs obligatoires" />
                     <HBox alignment="CENTER_LEFT" spacing="10">
                         <Button fx:id="addButton" minWidth="70" onAction="#onAdd" text="Ajouter" />
