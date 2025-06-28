@@ -33,7 +33,7 @@ public class EmailSender {
     public void sendEmail(String toEmail, String subject, String nomDestinataire, String contenu) throws MessagingException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.ssl.enable", "true"); // tu utilisais le port 465 → SSL
+        props.put("mail.smtp.ssl.enable", "true");
         props.put("mail.smtp.host", smtpHost);
         props.put("mail.smtp.port", smtpPort);
 
