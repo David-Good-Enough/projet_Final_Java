@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RawgImporter {
 
-    private static final String API_KEY = "008f4f8748d042f484b985132a0f54d4"; // remplace par ta clé
+    private static final String API_KEY = "008f4f8748d042f484b985132a0f54d4";
     private static final String BASE_URL = "https://api.rawg.io/api/games?page_size=10&key=" + API_KEY;
 
     public List<JeuVideo> fetchTopGames() {
