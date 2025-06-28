@@ -279,7 +279,7 @@ public class JeuxController implements Initializable {
 
     @FXML
     private void onExportJson() {
-        onExport(); // Tu réutilises la méthode existante
+        onExport();
     }
 
     @FXML
