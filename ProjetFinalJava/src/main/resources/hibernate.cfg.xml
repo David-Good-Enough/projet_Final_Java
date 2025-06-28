@@ -9,7 +9,7 @@
         <!-- Configuration de la base SQLite -->
         <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
         <property name="hibernate.connection.url">jdbc:sqlite:collection.db</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</property>
+        <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
 
         <!-- Options Hibernate -->
         <property name="hibernate.show_sql">true</property>
@@ -18,6 +18,7 @@
 
         <!-- Mapping des entités -->
         <mapping class="fr.ynov.collection.model.JeuVideo"/>
+        <mapping class="fr.ynov.collection.model.Support"/>
 
     </session-factory>
 </hibernate-configuration>
