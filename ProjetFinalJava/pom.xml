@@ -65,6 +65,20 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.15.2</version>
         </dependency>
+
+        <!-- envoi d'emails -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <!-- gson pour la sérialisation JSON -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
     </dependencies>
 
     <build>

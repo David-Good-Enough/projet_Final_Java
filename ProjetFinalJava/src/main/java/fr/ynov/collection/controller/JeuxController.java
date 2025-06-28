@@ -5,6 +5,7 @@ import fr.ynov.collection.model.Support;
 import fr.ynov.collection.repository.JeuVideoDao;
 import fr.ynov.collection.repository.SupportDao;
 import fr.ynov.collection.service.ExportService;
+import fr.ynov.collection.service.RawgImporter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,7 +74,7 @@ public class JeuxController implements Initializable {
         initializeData();
         setupUI();
         setupEventHandlers();
-        loadJeux();
+        loadJeuxDepuisRAWG();
         updateStatus("Prêt");
     }
 
@@ -273,6 +274,52 @@ public class JeuxController implements Initializable {
                 showError("Erreur lors de l'export", e.getMessage());
             }
         }
+    }
+
+    @FXML
+    private void onImportRAWG() {
+        try {
+            RawgImporter importer = new RawgImporter();
+            List<JeuVideo> importedGames = importer.fetchTopGames();
+
+            for (JeuVideo jeu : importedGames) {
+                Support support = supportDao.findOrCreateByNom(jeu.getSupport().getNom());
+                jeu.setSupport(support);
+                jeuVideoDao.save(jeu);
+            }
+
+            loadJeux();
+            updateStatus(importedGames.size() + " jeux importés via RAWG");
+            showInformation("Import réussi", importedGames.size() + " jeux ont été ajoutés à votre collection.");
+        } catch (Exception e) {
+            showError("Erreur lors de l'import", e.getMessage());
+        }
+    }
+
+    private void loadJeuxDepuisRAWG() {
+        try {
+            RawgImporter importer = new RawgImporter();
+            List<JeuVideo> jeuxRAWG = importer.fetchTopGames();
+
+            for (JeuVideo jeu : jeuxRAWG) {
+                Support support = supportDao.findOrCreateByNom(jeu.getSupport().getNom());
+                jeu.setSupport(support);
+                jeuVideoDao.save(jeu);
+            }
+
+            loadJeux(); // recharge depuis la BDD
+            updateStatus(jeuxRAWG.size() + " jeux importés automatiquement depuis RAWG");
+        } catch (Exception e) {
+            showError("Erreur lors de l'import RAWG", e.getMessage());
+        }
+    }
+
+    private void showInformation(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private void loadJeux() {
