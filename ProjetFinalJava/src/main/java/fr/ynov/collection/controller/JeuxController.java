@@ -4,6 +4,7 @@ import fr.ynov.collection.model.JeuVideo;
 import fr.ynov.collection.model.Support;
 import fr.ynov.collection.repository.JeuVideoDao;
 import fr.ynov.collection.repository.SupportDao;
+import fr.ynov.collection.service.EmailSender;
 import fr.ynov.collection.service.ExportService;
 import fr.ynov.collection.service.RawgImporter;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,7 +40,7 @@ public class JeuxController implements Initializable {
     @FXML private Label previewAnneeLabel;
     @FXML private Label previewSupportLabel;
     @FXML private Label previewNoteLabel;
-    
+
     @FXML private TextField titreField;
     @FXML private TextField editeurField;
     @FXML private TextField developpeurField;
@@ -47,19 +48,19 @@ public class JeuxController implements Initializable {
     @FXML private ComboBox<Support> supportComboBox;
     @FXML private TextField noteField;
     @FXML private TextField jaquetteField;
-    
+
     @FXML private TextField searchField;
     @FXML private ComboBox<Support> filterSupportComboBox;
     @FXML private ComboBox<String> filterAnneeComboBox;
     @FXML private ComboBox<String> filterNoteComboBox;
-    
+
     @FXML private Button addButton;
     @FXML private Button editButton;
     @FXML private Button deleteButton;
     @FXML private Button clearButton;
     @FXML private Button browseImageButton;
     @FXML private Button exportButton;
-    
+
     @FXML private Label statusLabel;
 
     private final JeuVideoDao jeuVideoDao = new JeuVideoDao();
@@ -81,12 +82,12 @@ public class JeuxController implements Initializable {
     private void initializeData() {
         // Initialiser les supports par défaut
         supportDao.initializeDefaultSupports();
-        
+
         // Charger les supports dans les ComboBox
         List<Support> supports = supportDao.findAll();
         supportComboBox.setItems(FXCollections.observableArrayList(supports));
         filterSupportComboBox.setItems(FXCollections.observableArrayList(supports));
-        
+
         // Initialiser les filtres d'année
         ObservableList<String> annees = FXCollections.observableArrayList();
         annees.add("Toutes les années");
@@ -95,11 +96,11 @@ public class JeuxController implements Initializable {
         }
         filterAnneeComboBox.setItems(annees);
         filterAnneeComboBox.getSelectionModel().selectFirst();
-        
+
         // Initialiser les filtres de note
         ObservableList<String> notes = FXCollections.observableArrayList();
         notes.add("Toutes les notes");
-        for (int i = 10; i >= 1; i--) {
+        for (int i = 100; i >= 1; i -= 10) {
             notes.add(i + "+");
         }
         filterNoteComboBox.setItems(notes);
@@ -120,11 +121,11 @@ public class JeuxController implements Initializable {
                 }
             }
         });
-        
+
         // Configuration des champs
         anneeDatePicker.setEditable(false);
         supportComboBox.setEditable(true);
-        
+
         // Désactiver les boutons au démarrage
         editButton.setDisable(true);
         deleteButton.setDisable(true);
@@ -187,7 +188,7 @@ public class JeuxController implements Initializable {
             showError("Erreur", "Aucun jeu sélectionné");
             return;
         }
-        
+
         if (validateForm()) {
             try {
                 updateJeuFromForm(selectedJeu);
@@ -239,7 +240,7 @@ public class JeuxController implements Initializable {
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp")
         );
-        
+
         File selectedFile = fileChooser.showOpenDialog(getStage());
         if (selectedFile != null) {
             jaquetteField.setText(selectedFile.toURI().toString());
@@ -253,26 +254,69 @@ public class JeuxController implements Initializable {
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("JSON", "*.json")
         );
-        
+
         // Nom de fichier par défaut avec timestamp
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         fileChooser.setInitialFileName("collection_jeux_" + timestamp + ".json");
-        
+
         File selectedFile = fileChooser.showSaveDialog(getStage());
         if (selectedFile != null) {
             try {
                 exportService.exportToJsonWithStats(selectedFile.getAbsolutePath());
                 updateStatus("Collection exportée avec succès vers " + selectedFile.getName());
-                
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Export réussi");
                 alert.setHeaderText("Collection exportée");
                 alert.setContentText("La collection a été exportée avec succès vers :\n" + selectedFile.getAbsolutePath());
                 alert.showAndWait();
-                
+
             } catch (Exception e) {
                 showError("Erreur lors de l'export", e.getMessage());
             }
+        }
+    }
+
+    @FXML
+    private void onExportJson() {
+        onExport(); // Tu réutilises la méthode existante
+    }
+
+    @FXML
+    private void onExportMail() {
+        try {
+            EmailSender sender = new EmailSender();
+            List<JeuVideo> jeux = jeuVideoDao.findAll();
+
+            if (jeux.isEmpty()) {
+                showError("Export Email", "Aucun jeu à envoyer.");
+                return;
+            }
+
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Export par Email");
+            dialog.setHeaderText("Envoyer la collection par mail");
+            dialog.setContentText("Adresse email du destinataire :");
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(email -> {
+                try {
+                    StringBuilder contenu = new StringBuilder();
+                    for (JeuVideo jeu : jeux) {
+                        contenu.append("• ").append(jeu.getTitre())
+                                .append(" (").append(jeu.getAnneeSortie()).append(") - ")
+                                .append(jeu.getSupport().getNom()).append("\n");
+                    }
+
+                    sender.sendEmail(email, "Votre collection de jeux", "Cher utilisateur", contenu.toString());
+                    showInformation("Email envoyé", "La collection a été envoyée à : " + email);
+                } catch (Exception e) {
+                    showError("Erreur lors de l'envoi", e.getMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            showError("Erreur d'export email", e.getMessage());
         }
     }
 
@@ -298,6 +342,15 @@ public class JeuxController implements Initializable {
 
     private void loadJeuxDepuisRAWG() {
         try {
+
+            List<JeuVideo> jeuxExistants = jeuVideoDao.findAll();
+            if (!jeuxExistants.isEmpty()) {
+                loadJeux();
+                updateStatus(jeuxExistants.size() + " jeux chargés depuis la base de données");
+                return;
+            }
+
+
             RawgImporter importer = new RawgImporter();
             List<JeuVideo> jeuxRAWG = importer.fetchTopGames();
 
@@ -307,8 +360,9 @@ public class JeuxController implements Initializable {
                 jeuVideoDao.save(jeu);
             }
 
-            loadJeux(); // recharge depuis la BDD
+            loadJeux();
             updateStatus(jeuxRAWG.size() + " jeux importés automatiquement depuis RAWG");
+
         } catch (Exception e) {
             showError("Erreur lors de l'import RAWG", e.getMessage());
         }
@@ -339,8 +393,8 @@ public class JeuxController implements Initializable {
         previewDeveloppeurLabel.setText("Développeur: " + jeu.getDeveloppeur());
         previewAnneeLabel.setText("Année: " + jeu.getAnneeSortie());
         previewSupportLabel.setText("Support: " + jeu.getSupport().getNom());
-        previewNoteLabel.setText("Note Metacritic: " + 
-            (jeu.getNoteMetacritic() != null ? jeu.getNoteMetacritic() + "/10" : "Non renseignée"));
+        previewNoteLabel.setText("Note Metacritic: " +
+            (jeu.getNoteMetacritic() != null ? jeu.getNoteMetacritic() + "/100" : "Non renseignée"));
 
         // Charger l'image de la jaquette
         if (jeu.getJaquette() != null && !jeu.getJaquette().isEmpty()) {
@@ -373,7 +427,7 @@ public class JeuxController implements Initializable {
         noteField.clear();
         jaquetteField.clear();
         jaquetteImageView.setImage(null);
-        
+
         previewTitleLabel.setText("");
         previewEditeurLabel.setText("");
         previewDeveloppeurLabel.setText("");
@@ -392,11 +446,11 @@ public class JeuxController implements Initializable {
         jeu.setTitre(titreField.getText().trim());
         jeu.setEditeur(editeurField.getText().trim());
         jeu.setDeveloppeur(developpeurField.getText().trim());
-        
+
         if (anneeDatePicker.getValue() != null) {
             jeu.setAnneeSortie(anneeDatePicker.getValue().getYear());
         }
-        
+
         Object supportValue = supportComboBox.getValue();
         Support support = null;
         if (supportValue instanceof Support) {
@@ -405,7 +459,7 @@ public class JeuxController implements Initializable {
             support = new SupportDao().findOrCreateByNom((String) supportValue);
         }
         jeu.setSupport(support);
-        
+
         String noteText = noteField.getText().trim();
         if (!noteText.isEmpty()) {
             try {
@@ -416,7 +470,7 @@ public class JeuxController implements Initializable {
         } else {
             jeu.setNoteMetacritic(null);
         }
-        
+
         String jaquetteText = jaquetteField.getText().trim();
         jeu.setJaquette(jaquetteText.isEmpty() ? null : jaquetteText);
     }
@@ -452,13 +506,13 @@ public class JeuxController implements Initializable {
             if (!searchText.isEmpty() && !jeu.getTitre().toLowerCase().contains(searchText)) {
                 return false;
             }
-            
+
             // Filtre par support
             Support selectedSupport = filterSupportComboBox.getValue();
             if (selectedSupport != null && !jeu.getSupport().equals(selectedSupport)) {
                 return false;
             }
-            
+
             // Filtre par année
             String selectedAnnee = filterAnneeComboBox.getValue();
             if (selectedAnnee != null && !selectedAnnee.equals("Toutes les années")) {
@@ -471,7 +525,7 @@ public class JeuxController implements Initializable {
                     // Ignorer si l'année n'est pas un nombre
                 }
             }
-            
+
             // Filtre par note
             String selectedNote = filterNoteComboBox.getValue();
             if (selectedNote != null && !selectedNote.equals("Toutes les notes")) {
@@ -484,7 +538,7 @@ public class JeuxController implements Initializable {
                     // Ignorer si la note n'est pas un nombre
                 }
             }
-            
+
             return true;
         });
     }
@@ -504,4 +558,4 @@ public class JeuxController implements Initializable {
     private Stage getStage() {
         return (Stage) statusLabel.getScene().getWindow();
     }
-} 
+}

@@ -21,7 +21,12 @@
         <ComboBox fx:id="filterAnneeComboBox" promptText="Toutes les années" prefWidth="120" />
         <Label text="Note:" />
         <ComboBox fx:id="filterNoteComboBox" promptText="Toutes les notes" prefWidth="100" />
-        <Button fx:id="exportButton" text="Exporter JSON" onAction="#onExport" />
+        <MenuButton text="Exporter" fx:id="exportMenuButton">
+            <items>
+                <MenuItem text="Exporter en JSON" onAction="#onExportJson"/>
+                <MenuItem text="Envoyer par Email" onAction="#onExportMail"/>
+            </items>
+        </MenuButton>
     </HBox>
 
     <BorderPane VBox.vgrow="ALWAYS">
@@ -85,7 +90,7 @@
                 <ComboBox fx:id="supportComboBox" promptText="Sélectionner un support" />
                 
                 <Label text="Note Metacritic" />
-                <TextField fx:id="noteField" promptText="Note sur 10 (optionnelle)" />
+                <TextField fx:id="noteField" promptText="Note sur 100 (optionnelle)" />
                 
                 <Label text="Jaquette" />
                 <HBox spacing="5">
